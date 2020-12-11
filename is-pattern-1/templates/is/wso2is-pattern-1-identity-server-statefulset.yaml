@@ -74,7 +74,7 @@ spec:
         {{ end }}
       containers:
         - name: identity-server
-{{- include "image" (dict "Values" .Values "deployment" .Values.wso2.deployment.wso2is) | indent 10 }}
+          {{- include "image" (dict "Values" .Values "deployment" .Values.wso2.deployment.wso2is) | indent 10 }}
           imagePullPolicy: {{ .Values.wso2.deployment.wso2is.imagePullPolicy }}
           env:
             - name: NODE_IP
@@ -182,13 +182,6 @@ spec:
               value: {{ .Values.wso2.centralizedLogging.logstash.elasticsearch.host }}
         {{ end }}
       serviceAccountName: {{ .Values.kubernetes.serviceAccount }}
-      {{- if .Values.wso2.deployment.wso2is.imagePullSecrets }}
-      imagePullSecrets:
-        - name: {{ .Values.wso2.deployment.wso2is.imagePullSecrets }}
-      {{- else if and (not (eq .Values.wso2.subscription.username "")) (not (eq .Values.wso2.subscription.password "")) }}
-      imagePullSecrets:
-        - name: {{ template "is-pattern-1.resource.prefix" . }}-wso2-private-registry-creds
-      {{ end }}
       volumes:
       - name: identity-server-conf
         configMap:
